@@ -99,7 +99,7 @@ void Automaton::propagateNewGeneration(){
         if (i == 0 || i == nextGen.length()-1){
             continue;
         }
-        index = convertCharactersToIndex(i - 1, i, i + 1);
+        index = convertCharactersToIndex(nextGen[i - 1], nextGen[i], nextGen[i + 1]);
         if (rule[index]) {
             newGen = newGen + "*"; 
         } else {
@@ -130,7 +130,25 @@ void Automaton::propagateNewGeneration(){
 int convertCharactersToIndex(char left, char center, char right){
     int runningTotal = 0;
     int index;
-    runningTotal = ((int)left * 4) + ((int)center * 2) + ((int)right * 1);
+    int convertedLeft;
+    int convertedCenter;
+    int convertedRight;
+    if (left == '*') {
+        convertedLeft = 1;
+    } else {
+        convertedLeft = 0;
+    }
+    if (center == '*') {
+        convertedCenter = 1;
+    } else {
+        convertedCenter = 0;
+    }
+    if (right == '*') {
+        convertedRight = 1;
+    } else {
+        convertedRight = 0;
+    }
+    runningTotal = (convertedLeft * 4) + (convertedCenter * 2) + (convertedRight * 1);
     //7 represents max index of rule
     index = 7 - runningTotal;
     return index;
